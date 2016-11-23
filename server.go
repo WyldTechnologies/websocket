@@ -202,12 +202,12 @@ func (u *Upgrader) UpgradeConn(w http.ResponseWriter, r *http.Request, responseH
 }
 
 func writeString(err *error, rw *bufio.ReadWriter, str string) {
-	if *err != nil {
+	if *err == nil {
 		_, *err = rw.WriteString(str)
 	}
 }
 func writeByte(err *error, rw *bufio.ReadWriter, b byte) {
-	if *err != nil {
+	if *err == nil {
 		*err = rw.WriteByte(b)
 	}
 }
