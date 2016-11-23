@@ -14,9 +14,6 @@ import (
 )
 
 const (
-	handshakeHead  = ""
-	compressHeader = ""
-
 	headerConnection             = "Connection"
 	headerUpgrade                = "Upgrade"
 	headerOrigin                 = "Origin"
@@ -24,6 +21,18 @@ const (
 	headerSecWebSocketExtensions = "Sec-Websocket-Extensions"
 	headerSecWebSocketVersion    = "Sec-Websocket-Version"
 	headerSecWebSocketKey        = "Sec-Websocket-Key"
+)
+
+var (
+	ErrHandshakeNonGet           = HandshakeError{"websocket: method not GET"}
+	ErrHandshakeVersion          = HandshakeError{"websocket: version != 13"}
+	ErrHandshakeExtUnsupported   = HandshakeError{"websocket: application specific Sec-Websocket-Extensions headers are unsupported"}
+	ErrHandshakeHeaderConnection = HandshakeError{"websocket: could not find connection header with token 'upgrade'"}
+	ErrHandshakeHeaderUpgrade    = HandshakeError{"websocket: could not find upgrade header with token 'websocket'"}
+	ErrHandshakeOrigin           = HandshakeError{"websocket: origin not allowed"}
+	ErrHandshakeSecKey           = HandshakeError{"websocket: key missing or blank"}
+	ErrHandshakeHijacker         = HandshakeError{"websocket: response does not implement http.Hijacker"}
+	ErrHandshakeReadNonEmpty     = HandshakeError{"websocket: client sent data before handshake is complete"}
 )
 
 // HandshakeError describes an error with the handshake from the peer.
@@ -103,18 +112,6 @@ func (u *Upgrader) selectSubprotocol(r *http.Request, responseHeader http.Header
 	}
 	return ""
 }
-
-var (
-	ErrHandshakeNonGet           = HandshakeError{"websocket: method not GET"}
-	ErrHandshakeVersion          = HandshakeError{"websocket: version != 13"}
-	ErrHandshakeExtUnsupported   = HandshakeError{"websocket: application specific Sec-Websocket-Extensions headers are unsupported"}
-	ErrHandshakeHeaderConnection = HandshakeError{"websocket: could not find connection header with token 'upgrade'"}
-	ErrHandshakeHeaderUpgrade    = HandshakeError{"websocket: could not find upgrade header with token 'websocket'"}
-	ErrHandshakeOrigin           = HandshakeError{"websocket: origin not allowed"}
-	ErrHandshakeSecKey           = HandshakeError{"websocket: key missing or blank"}
-	ErrHandshakeHijacker         = HandshakeError{"websocket: response does not implement http.Hijacker"}
-	ErrHandshakeReadNonEmpty     = HandshakeError{"websocket: client sent data before handshake is complete"}
-)
 
 // UpgradeConn upgrades the HTTP server connection to the WebSocket protocol.
 // It returns plain net.Conn instance, that could be wrapped in Conn.
