@@ -139,7 +139,6 @@ func sendRecv(t *testing.T, ws *Conn) {
 }
 
 func TestProxyDial(t *testing.T) {
-
 	s := newServer(t)
 	defer s.Close()
 
