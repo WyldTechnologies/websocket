@@ -372,11 +372,13 @@ func TestDialBadHeader(t *testing.T) {
 	s := newServer(t)
 	defer s.Close()
 
-	for _, k := range []string{"Upgrade",
+	for _, k := range []string{
+		"Upgrade",
 		"Connection",
 		"Sec-Websocket-Key",
 		"Sec-Websocket-Version",
-		"Sec-Websocket-Protocol"} {
+		"Sec-Websocket-Protocol",
+	} {
 		h := http.Header{}
 		h.Set(k, "bad")
 		ws, _, err := cstDialer.Dial(s.URL, http.Header{"Origin": {"bad"}})

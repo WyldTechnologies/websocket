@@ -19,6 +19,7 @@ const (
 
 	headerConnection             = "Connection"
 	headerUpgrade                = "Upgrade"
+	headerOrigin                 = "Origin"
 	headerSecWebSocketProtocol   = "Sec-Websocket-Protocol"
 	headerSecWebSocketExtensions = "Sec-Websocket-Extensions"
 	headerSecWebSocketVersion    = "Sec-Websocket-Version"
@@ -76,7 +77,7 @@ func (u *Upgrader) returnError(w http.ResponseWriter, r *http.Request, status in
 
 // checkSameOrigin returns true if the origin is not set or is equal to the request host.
 func checkSameOrigin(r *http.Request) bool {
-	origin := r.Header["Origin"]
+	origin := r.Header[headerOrigin]
 	if len(origin) == 0 {
 		return true
 	}
